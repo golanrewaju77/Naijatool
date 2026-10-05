@@ -1,19 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NaijaTool Admin</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>NaijaTool Admin Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -22,284 +16,340 @@
 
     body {
       font-family: Arial, sans-serif;
-      background: #f4f7f5;
-      color: #102018;
-    }
-
-    header {
-      background: #102018;
+      background: #080b14;
       color: white;
       padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
 
-    header a {
-      color: #76d6a4;
-      text-decoration: none;
-    }
-
-    main {
-      max-width: 1100px;
+    .container {
+      max-width: 900px;
       margin: auto;
-      padding: 25px 18px;
     }
 
-    .welcome {
-      margin-bottom: 25px;
+    .login, .dashboard {
+      background: #111827;
+      border-radius: 18px;
+      padding: 25px;
+      border: 1px solid #273449;
     }
 
-    .welcome h1 {
-      font-size: 30px;
+    h1 {
       margin-bottom: 8px;
     }
 
-    .welcome p {
-      color: #68756e;
+    .subtitle {
+      color: #9ca3af;
+      margin-bottom: 25px;
     }
 
-    .dashboard {
-      display: grid;
-      grid-template-columns:
-        repeat(auto-fit, minmax(220px, 1fr));
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 8px 0;
+      border-radius: 10px;
+      border: 1px solid #374151;
+      background: #0b1220;
+      color: white;
+      font-size: 16px;
+    }
 
-      gap: 18px;
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #6d5dfc;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .logout {
+      background: #dc2626;
+      margin-bottom: 25px;
+    }
+
+    .error {
+      color: #f87171;
+      margin-top: 12px;
+    }
+
+    .success {
+      color: #4ade80;
+      margin-top: 12px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin-top: 25px;
     }
 
     .card {
-      background: white;
-      border-radius: 16px;
-      padding: 25px;
-      border: 1px solid #dfe8e2;
-      box-shadow: 0 5px 18px rgba(0,0,0,0.04);
+      background: #182235;
+      padding: 22px;
+      border-radius: 15px;
     }
 
     .card h3 {
-      color: #68756e;
-      font-size: 15px;
+      color: #9ca3af;
+      font-size: 14px;
       margin-bottom: 10px;
     }
 
     .number {
-      font-size: 35px;
+      font-size: 32px;
       font-weight: bold;
-      color: #087f46;
+    }
+
+    .hidden {
+      display: none;
     }
 
     .status {
       margin-top: 25px;
-      padding: 20px;
-      background: white;
-      border-radius: 16px;
-      border: 1px solid #dfe8e2;
-    }
-
-    .status span {
-      font-weight: bold;
-      color: #d28a00;
-    }
-
-    .notice {
-      margin-top: 20px;
-      background: #fff8e6;
-      border: 1px solid #f1d58a;
-      padding: 18px;
+      padding: 15px;
+      background: #0d1727;
       border-radius: 12px;
-      color: #6b5200;
+      color: #4ade80;
     }
-
-    .back {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 12px 18px;
-      border-radius: 9px;
-      background: #087f46;
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px;
-      color: #718078;
-    }
-
   </style>
-
 </head>
-
 
 <body>
 
+<div class="container">
 
-<header>
+  <!-- LOGIN -->
+  <div id="loginBox" class="login">
+    <h1>🔐 NaijaTool Admin</h1>
+    <p class="subtitle">Private administrator login</p>
 
-  <strong>🇳🇬 NaijaTool Admin</strong>
+    <input
+      type="email"
+      id="email"
+      placeholder="Admin email"
+      autocomplete="email"
+    >
 
-  <a href="index.html">
-    Back to website
-  </a>
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+      autocomplete="current-password"
+    >
 
-</header>
+    <button onclick="login()">Login</button>
 
-
-<main>
-
-
-  <section class="welcome">
-
-    <h1>Admin Dashboard</h1>
-
-    <p>
-      Website overview and statistics.
-    </p>
-
-  </section>
-
-
-  <section class="dashboard">
+    <p id="loginMessage"></p>
+  </div>
 
 
-    <div class="card">
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="dashboard hidden">
 
-      <h3>Total Users</h3>
+    <h1>🇳🇬 NaijaTool Dashboard</h1>
+    <p class="subtitle">Private admin area</p>
 
-      <div
-        class="number"
-        id="totalUsers"
-      >
-        0
+    <button class="logout" onclick="logout()">Log out</button>
+
+    <div class="cards">
+
+      <div class="card">
+        <h3>Total Users</h3>
+        <div class="number" id="totalUsers">0</div>
+      </div>
+
+      <div class="card">
+        <h3>New Users Today</h3>
+        <div class="number" id="newUsers">0</div>
+      </div>
+
+      <div class="card">
+        <h3>Total Tool Uses</h3>
+        <div class="number" id="toolUses">0</div>
+      </div>
+
+      <div class="card">
+        <h3>Website Status</h3>
+        <div class="number">🟢</div>
       </div>
 
     </div>
 
-
-    <div class="card">
-
-      <h3>New Users Today</h3>
-
-      <div
-        class="number"
-        id="newUsers"
-      >
-        0
-      </div>
-
+    <div class="status">
+      Database connected successfully.
     </div>
 
+  </div>
 
-    <div class="card">
-
-      <h3>Tool Uses</h3>
-
-      <div
-        class="number"
-        id="toolUses"
-      >
-        0
-      </div>
-
-    </div>
-
-
-    <div class="card">
-
-      <h3>Website Status</h3>
-
-      <div
-        class="number"
-        style="font-size:22px;"
-      >
-        Online
-      </div>
-
-    </div>
-
-
-  </section>
-
-
-  <section class="status">
-
-    <h2>Database Status</h2>
-
-    <br>
-
-    <p>
-      Supabase connection:
-      <span id="databaseStatus">
-        Not connected
-      </span>
-    </p>
-
-  </section>
-
-
-  <section class="notice">
-
-    <strong>Important:</strong>
-
-    <p>
-      This dashboard is currently a visual/admin placeholder.
-      It is NOT secure yet.
-    </p>
-
-    <p>
-      The next step is to connect Supabase authentication
-      so only you can access this page and the user numbers
-      become real.
-    </p>
-
-  </section>
-
-
-  <a
-    href="index.html"
-    class="back"
-  >
-    ← Back to NaijaTool
-  </a>
-
-
-</main>
-
-
-<footer>
-
-  © 2026 NaijaTool Admin
-
-</footer>
+</div>
 
 
 <script>
 
-  /*
-    Temporary values.
+const SUPABASE_URL =
+  "https://vabrpwyjsowbgzoktxvy.supabase.co";
 
-    These will later be replaced
-    with real Supabase data.
-  */
+const SUPABASE_KEY =
+  "sb_publishable_AJ5Wbwx4q2yAkaaZUl-bvg_dTDNYDbP";
 
-  document.getElementById(
-    "totalUsers"
-  ).textContent = "0";
-
-
-  document.getElementById(
-    "newUsers"
-  ).textContent = "0";
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-  document.getElementById(
-    "toolUses"
-  ).textContent = "0";
+async function login() {
 
+  const email =
+    document.getElementById("email").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  const message =
+    document.getElementById("loginMessage");
+
+  message.className = "";
+  message.textContent = "Logging in...";
+
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+  if (error) {
+    message.className = "error";
+    message.textContent = error.message;
+    return;
+  }
+
+  await checkAdmin();
+}
+
+
+async function checkAdmin() {
+
+  const {
+    data: { user }
+  } = await supabaseClient.auth.getUser();
+
+  if (!user) {
+    showLogin();
+    return;
+  }
+
+  const { data, error } =
+    await supabaseClient
+      .from("admin_users")
+      .select("user_id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+  if (error || !data) {
+
+    await supabaseClient.auth.signOut();
+
+    document.getElementById("loginMessage").className = "error";
+    document.getElementById("loginMessage").textContent =
+      "Access denied. This account is not an administrator.";
+
+    showLogin();
+    return;
+  }
+
+  showDashboard();
+  loadStats();
+}
+
+
+async function loadStats() {
+
+  const users =
+    await supabaseClient
+      .from("profiles")
+      .select("*", {
+        count: "exact",
+        head: true
+      });
+
+  document.getElementById("totalUsers").textContent =
+    users.count ?? 0;
+
+
+  const start =
+    new Date();
+
+  start.setHours(0, 0, 0, 0);
+
+  const newUsers =
+    await supabaseClient
+      .from("profiles")
+      .select("*", {
+        count: "exact",
+        head: true
+      })
+      .gte("created_at", start.toISOString());
+
+  document.getElementById("newUsers").textContent =
+    newUsers.count ?? 0;
+
+
+  const uses =
+    await supabaseClient
+      .from("tool_usage")
+      .select("*", {
+        count: "exact",
+        head: true
+      });
+
+  document.getElementById("toolUses").textContent =
+    uses.count ?? 0;
+}
+
+
+async function logout() {
+
+  await supabaseClient.auth.signOut();
+
+  showLogin();
+}
+
+
+function showLogin() {
+
+  document
+    .getElementById("loginBox")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("dashboard")
+    .classList.add("hidden");
+}
+
+
+function showDashboard() {
+
+  document
+    .getElementById("loginBox")
+    .classList.add("hidden");
+
+  document
+    .getElementById("dashboard")
+    .classList.remove("hidden");
+}
+
+
+// Check existing session when page opens
+checkAdmin();
 
 </script>
 
-
 </body>
-
-    </html>
+</html>
