@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>NaijaTool Admin Dashboard</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7f5;
+      color: #102018;
+    }
+
+    header {
+      background: #102018;
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header a {
+      color: #76d6a4;
+      text-decoration: none;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px 18px;
+    }
+
+    .welcome {
+      margin-bottom: 25px;
+    }
+
+    .welcome h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      color: #68756e;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
+      gap: 18px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 25px;
+      border: 1px solid #dfe8e2;
+      box-shadow: 0 5px 18px rgba(0,0,0,0.04);
+    }
+
+    .card h3 {
+      color: #68756e;
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .number {
+      font-size: 35px;
+      font-weight: bold;
+      color: #087f46;
+    }
+
+    .status {
+      margin-top: 25px;
+      padding: 20px;
+      background: white;
+      border-radius: 16px;
+      border: 1px solid #dfe8e2;
+    }
+
+    .status span {
+      font-weight: bold;
+      color: #d28a00;
+    }
+
+    .notice {
+      margin-top: 20px;
+      background: #fff8e6;
+      border: 1px solid #f1d58a;
+      padding: 18px;
+      border-radius: 12px;
+      color: #6b5200;
+    }
+
+    .back {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 12px 18px;
+      border-radius: 9px;
+      background: #087f46;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #718078;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+  <strong>🇳🇬 NaijaTool Admin</strong>
+
+  <a href="index.html">
+    Back to website
+  </a>
+
+</header>
+
+
+<main>
+
+
+  <section class="welcome">
+
+    <h1>Admin Dashboard</h1>
+
+    <p>
+      Website overview and statistics.
+    </p>
+
+  </section>
+
+
+  <section class="dashboard">
+
+
+    <div class="card">
+
+      <h3>Total Users</h3>
+
+      <div
+        class="number"
+        id="totalUsers"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>New Users Today</h3>
+
+      <div
+        class="number"
+        id="newUsers"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>Tool Uses</h3>
+
+      <div
+        class="number"
+        id="toolUses"
+      >
+        0
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>Website Status</h3>
+
+      <div
+        class="number"
+        style="font-size:22px;"
+      >
+        Online
+      </div>
+
+    </div>
+
+
+  </section>
+
+
+  <section class="status">
+
+    <h2>Database Status</h2>
+
+    <br>
+
+    <p>
+      Supabase connection:
+      <span id="databaseStatus">
+        Not connected
+      </span>
+    </p>
+
+  </section>
+
+
+  <section class="notice">
+
+    <strong>Important:</strong>
+
+    <p>
+      This dashboard is currently a visual/admin placeholder.
+      It is NOT secure yet.
+    </p>
+
+    <p>
+      The next step is to connect Supabase authentication
+      so only you can access this page and the user numbers
+      become real.
+    </p>
+
+  </section>
+
+
+  <a
+    href="index.html"
+    class="back"
+  >
+    ← Back to NaijaTool
+  </a>
+
+
+</main>
+
+
+<footer>
+
+  © 2026 NaijaTool Admin
+
+</footer>
+
+
+<script>
+
+  /*
+    Temporary values.
+
+    These will later be replaced
+    with real Supabase data.
+  */
+
+  document.getElementById(
+    "totalUsers"
+  ).textContent = "0";
+
+
+  document.getElementById(
+    "newUsers"
+  ).textContent = "0";
+
+
+  document.getElementById(
+    "toolUses"
+  ).textContent = "0";
+
+
+</script>
+
+
+</body>
+
+    </html>
