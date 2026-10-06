@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,10 +45,24 @@
       color: #087f46;
     }
 
-    header a {
-      text-decoration: none;
-      color: #087f46;
+    .accountBtn {
+      border: none;
+      background: #087f46;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 9px;
+      cursor: pointer;
       font-weight: bold;
+    }
+
+    .accountBtn:hover {
+      background: #066638;
+    }
+
+    .userEmail {
+      margin-right: 10px;
+      font-size: 13px;
+      color: #526159;
     }
 
     main {
@@ -71,6 +86,12 @@
       max-width: 650px;
       margin: auto;
       font-size: 18px;
+    }
+
+    .loginNotice {
+      color: #087f46 !important;
+      font-weight: bold;
+      margin-top: 12px !important;
     }
 
     .search {
@@ -155,6 +176,88 @@
       text-decoration: none;
     }
 
+    /* AUTH */
+
+    .authOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.70);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .authCard {
+      width: min(430px, 100%);
+      background: white;
+      color: #102018;
+      border-radius: 18px;
+      padding: 28px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+
+    .authCard h2 {
+      margin-bottom: 7px;
+    }
+
+    .authCard > div > p {
+      color: #68756e;
+      margin-bottom: 15px;
+    }
+
+    .authCard input {
+      width: 100%;
+      padding: 14px;
+      margin: 6px 0;
+      border: 1px solid #ccd8d1;
+      border-radius: 9px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .authCard input:focus {
+      border-color: #087f46;
+    }
+
+    .authCard .submitBtn {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .closeAuth {
+      position: absolute;
+      right: 13px;
+      top: 8px;
+      background: transparent !important;
+      color: #102018 !important;
+      font-size: 28px;
+      padding: 0;
+    }
+
+    .authMsg {
+      min-height: 25px;
+      margin-top: 10px !important;
+      font-size: 14px;
+    }
+
+    .switch {
+      text-align: center;
+      margin-top: 15px !important;
+    }
+
+    .switch a {
+      color: #087f46;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
     @media (max-width: 600px) {
 
       .hero h1 {
@@ -165,8 +268,12 @@
         font-size: 16px;
       }
 
-      header span {
+      .userEmail {
         display: none;
+      }
+
+      header {
+        padding: 14px;
       }
 
     }
@@ -176,38 +283,184 @@
 <body>
 
 <header>
-  <div class="logo">🇳🇬 NaijaTool</div>
 
-  <a href="#tools">Tools</a>
+  <div class="logo">
+    🇳🇬 NaijaTool
+  </div>
+
+  <div id="accountArea">
+
+    <button
+      class="accountBtn"
+      onclick="showAuth('login')">
+      Login / Sign up
+    </button>
+
+  </div>
+
 </header>
+
+
+<!-- AUTHENTICATION POPUP -->
+
+<div
+  id="authOverlay"
+  class="authOverlay hidden">
+
+  <div class="authCard">
+
+    <button
+      class="closeAuth"
+      onclick="closeAuth()">
+      ×
+    </button>
+
+
+    <!-- LOGIN -->
+
+    <div id="loginPanel">
+
+      <h2>
+        Welcome Back 👋
+      </h2>
+
+      <p>
+        Login to use NaijaTool.
+      </p>
+
+      <input
+        id="loginEmail"
+        type="email"
+        autocomplete="email"
+        placeholder="Gmail / Email">
+
+      <input
+        id="loginPassword"
+        type="password"
+        autocomplete="current-password"
+        placeholder="Password">
+
+      <button
+        class="submitBtn"
+        onclick="loginUser()">
+        Login
+      </button>
+
+      <p
+        id="loginMsg"
+        class="authMsg">
+      </p>
+
+      <p class="switch">
+        Don't have an account?
+        <a onclick="showAuth('signup')">
+          Sign up
+        </a>
+      </p>
+
+    </div>
+
+
+    <!-- SIGNUP -->
+
+    <div
+      id="signupPanel"
+      class="hidden">
+
+      <h2>
+        Create Your Account 🚀
+      </h2>
+
+      <p>
+        Create an account to use NaijaTool.
+      </p>
+
+      <input
+        id="signupEmail"
+        type="email"
+        autocomplete="email"
+        placeholder="Gmail / Email">
+
+      <input
+        id="signupPassword"
+        type="password"
+        autocomplete="new-password"
+        placeholder="Password (minimum 6 characters)">
+
+      <input
+        id="signupConfirm"
+        type="password"
+        autocomplete="new-password"
+        placeholder="Confirm password">
+
+      <button
+        class="submitBtn"
+        onclick="signupUser()">
+        Create Account
+      </button>
+
+      <p
+        id="signupMsg"
+        class="authMsg">
+      </p>
+
+      <p class="switch">
+        Already have an account?
+        <a onclick="showAuth('login')">
+          Login
+        </a>
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
 
 
 <main>
 
   <section class="hero">
 
-    <h1>Useful Tools. Made for Everyday Life.</h1>
+    <h1>
+      Useful Tools. Made for Everyday Life.
+    </h1>
 
     <p>
-      Free, simple and fast online tools for Nigerians and users around the world.
+      Free, simple and fast online tools for Nigerians
+      and users around the world.
     </p>
 
+    <p
+      id="loginRequired"
+      class="loginNotice">
+      Create an account or login to use the tools.
+    </p>
+
+
     <div class="search">
+
       <input
         type="text"
         id="search"
         placeholder="Search for a tool..."
-        onkeyup="searchTools()"
-      >
+        onkeyup="searchTools()">
+
     </div>
 
   </section>
 
 
   <div class="ad">
+
     Advertisement
+
     <br>
-    <small>Ad space will be connected to Google AdSense later.</small>
+
+    <small>
+      Ad space will be connected to Google AdSense later.
+    </small>
+
   </div>
 
 
@@ -215,60 +468,142 @@
 
     <div class="tools">
 
+
       <div class="tool">
-        <h2>🧮 Calculator</h2>
-        <p>Perform quick everyday calculations.</p>
-        <button onclick="calculator()">Open Tool</button>
+
+        <h2>
+          🧮 Calculator
+        </h2>
+
+        <p>
+          Perform quick everyday calculations.
+        </p>
+
+        <button onclick="calculator()">
+          Open Tool
+        </button>
+
       </div>
 
 
       <div class="tool">
-        <h2>📊 Percentage</h2>
-        <p>Calculate percentages quickly.</p>
-        <button onclick="percentage()">Open Tool</button>
+
+        <h2>
+          📊 Percentage
+        </h2>
+
+        <p>
+          Calculate percentages quickly.
+        </p>
+
+        <button onclick="percentage()">
+          Open Tool
+        </button>
+
       </div>
 
 
       <div class="tool">
-        <h2>🎂 Age Calculator</h2>
-        <p>Calculate someone's age.</p>
-        <button onclick="ageCalculator()">Open Tool</button>
+
+        <h2>
+          🎂 Age Calculator
+        </h2>
+
+        <p>
+          Calculate someone's age.
+        </p>
+
+        <button onclick="ageCalculator()">
+          Open Tool
+        </button>
+
       </div>
 
 
       <div class="tool">
-        <h2>📝 Text Counter</h2>
-        <p>Count words and characters.</p>
-        <button onclick="textCounter()">Open Tool</button>
+
+        <h2>
+          📝 Text Counter
+        </h2>
+
+        <p>
+          Count words and characters.
+        </p>
+
+        <button onclick="textCounter()">
+          Open Tool
+        </button>
+
       </div>
 
 
       <div class="tool">
-        <h2>🔐 Password Generator</h2>
-        <p>Generate a strong password.</p>
-        <button onclick="passwordGenerator()">Generate</button>
+
+        <h2>
+          🔐 Password Generator
+        </h2>
+
+        <p>
+          Generate a strong password.
+        </p>
+
+        <button onclick="passwordGenerator()">
+          Generate
+        </button>
+
       </div>
 
 
       <div class="tool">
-        <h2>📏 Unit Converter</h2>
-        <p>Convert kilometres to miles.</p>
-        <button onclick="unitConverter()">Open Tool</button>
+
+        <h2>
+          📏 Unit Converter
+        </h2>
+
+        <p>
+          Convert kilometres to miles.
+        </p>
+
+        <button onclick="unitConverter()">
+          Open Tool
+        </button>
+
       </div>
 
 
       <div class="tool">
-        <h2>💰 Currency Calculator</h2>
-        <p>Convert currencies.</p>
-        <button onclick="currency()">Open Tool</button>
+
+        <h2>
+          💰 Currency Calculator
+        </h2>
+
+        <p>
+          Convert currencies.
+        </p>
+
+        <button onclick="currency()">
+          Open Tool
+        </button>
+
       </div>
 
 
       <div class="tool">
-        <h2>🔢 Number Checker</h2>
-        <p>Check whether a number is even or odd.</p>
-        <button onclick="numberChecker()">Open Tool</button>
+
+        <h2>
+          🔢 Number Checker
+        </h2>
+
+        <p>
+          Check whether a number is even or odd.
+        </p>
+
+        <button onclick="numberChecker()">
+          Open Tool
+        </button>
+
       </div>
+
 
     </div>
 
@@ -276,19 +611,23 @@
 
 
   <div class="ad">
+
     Advertisement
+
   </div>
 
 
   <section class="about">
 
-    <h2>About NaijaTool</h2>
+    <h2>
+      About NaijaTool
+    </h2>
 
     <br>
 
     <p>
-      NaijaTool is a free online toolbox designed to provide useful,
-      simple and mobile-friendly tools for everyday tasks.
+      NaijaTool is a free online toolbox designed to provide
+      useful, simple and mobile-friendly tools for everyday tasks.
     </p>
 
     <br>
@@ -304,124 +643,632 @@
 
 <footer>
 
-  <p>© 2026 NaijaTool. All rights reserved.</p>
+  <p>
+    © 2026 NaijaTool. All rights reserved.
+  </p>
 
   <br>
 
-  <a href="admin.html">Admin</a>
+  <a href="admin.html">
+    Admin
+  </a>
 
 </footer>
 
 
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
 <script>
 
-function calculator() {
+const SUPABASE_URL =
+  "https://vabrpwyjsowbgzoktxvy.supabase.co";
 
-  let first = Number(prompt("Enter first number:"));
+const SUPABASE_KEY =
+  "sb_publishable_AJ5Wbwx4q2yAkaaZUl-bvg_dTDNYDbP";
 
-  let operator = prompt("Enter operator (+, -, *, /):");
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
-  let second = Number(prompt("Enter second number:"));
 
-  let result;
+/* =========================
+   AUTH UI
+========================= */
 
-  if (operator === "+") {
-    result = first + second;
+function showAuth(mode) {
+
+  document
+    .getElementById("authOverlay")
+    .classList
+    .remove("hidden");
+
+  document
+    .getElementById("loginPanel")
+    .classList
+    .toggle(
+      "hidden",
+      mode !== "login"
+    );
+
+  document
+    .getElementById("signupPanel")
+    .classList
+    .toggle(
+      "hidden",
+      mode !== "signup"
+    );
+
+}
+
+
+function closeAuth() {
+
+  document
+    .getElementById("authOverlay")
+    .classList
+    .add("hidden");
+
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function setMessage(
+  id,
+  message,
+  success = false
+) {
+
+  const element =
+    document.getElementById(id);
+
+  element.textContent =
+    message;
+
+  element.style.color =
+    success
+      ? "#087f46"
+      : "#c62828";
+
+}
+
+
+/* =========================
+   SIGN UP
+========================= */
+
+async function signupUser() {
+
+  const email =
+    document
+      .getElementById("signupEmail")
+      .value
+      .trim();
+
+  const password =
+    document
+      .getElementById("signupPassword")
+      .value;
+
+  const confirm =
+    document
+      .getElementById("signupConfirm")
+      .value;
+
+
+  if (
+    !email ||
+    !email.includes("@")
+  ) {
+
+    setMessage(
+      "signupMsg",
+      "Enter a valid email address."
+    );
+
+    return;
   }
 
-  else if (operator === "-") {
-    result = first - second;
+
+  if (password.length < 6) {
+
+    setMessage(
+      "signupMsg",
+      "Password must be at least 6 characters."
+    );
+
+    return;
   }
 
-  else if (operator === "*") {
-    result = first * second;
+
+  if (password !== confirm) {
+
+    setMessage(
+      "signupMsg",
+      "Passwords do not match."
+    );
+
+    return;
   }
 
-  else if (operator === "/") {
 
-    if (second === 0) {
-      alert("Cannot divide by zero.");
-      return;
-    }
+  setMessage(
+    "signupMsg",
+    "Creating your account...",
+    true
+  );
 
-    result = first / second;
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.auth.signUp({
+
+      email: email,
+
+      password: password,
+
+      options: {
+
+        emailRedirectTo:
+          window.location.origin +
+          window.location.pathname
+
+      }
+
+    });
+
+
+  if (error) {
+
+    setMessage(
+      "signupMsg",
+      error.message
+    );
+
+    return;
+  }
+
+
+  /*
+    Save profile.
+  */
+
+  if (data.user) {
+
+    await supabaseClient
+      .from("profiles")
+      .upsert(
+        {
+          id: data.user.id
+        },
+        {
+          onConflict: "id"
+        }
+      );
+
+  }
+
+
+  /*
+    If email confirmation is required,
+    there will be no session yet.
+  */
+
+  if (!data.session) {
+
+    setMessage(
+      "signupMsg",
+      "Account created! Check your email and click the confirmation link before logging in.",
+      true
+    );
+
+    document
+      .getElementById("signupPassword")
+      .value = "";
+
+    document
+      .getElementById("signupConfirm")
+      .value = "";
+
+    return;
+  }
+
+
+  closeAuth();
+
+  updateAuthUI(
+    data.user
+  );
+
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+async function loginUser() {
+
+  const email =
+    document
+      .getElementById("loginEmail")
+      .value
+      .trim();
+
+  const password =
+    document
+      .getElementById("loginPassword")
+      .value;
+
+
+  if (!email || !password) {
+
+    setMessage(
+      "loginMsg",
+      "Enter your email and password."
+    );
+
+    return;
+  }
+
+
+  setMessage(
+    "loginMsg",
+    "Logging in...",
+    true
+  );
+
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.auth.signInWithPassword({
+
+      email: email,
+
+      password: password
+
+    });
+
+
+  if (error) {
+
+    setMessage(
+      "loginMsg",
+      error.message
+    );
+
+    return;
+  }
+
+
+  /*
+    Make sure profile exists.
+  */
+
+  await supabaseClient
+    .from("profiles")
+    .upsert(
+      {
+        id: data.user.id
+      },
+      {
+        onConflict: "id"
+      }
+    );
+
+
+  closeAuth();
+
+  updateAuthUI(
+    data.user
+  );
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logoutUser() {
+
+  await supabaseClient
+    .auth
+    .signOut();
+
+  updateAuthUI(null);
+
+}
+
+
+/* =========================
+   UPDATE ACCOUNT BUTTON
+========================= */
+
+function updateAuthUI(user) {
+
+  const area =
+    document.getElementById(
+      "accountArea"
+    );
+
+  const notice =
+    document.getElementById(
+      "loginRequired"
+    );
+
+
+  if (user) {
+
+    area.innerHTML =
+
+      '<span class="userEmail">' +
+      (user.email || "Account") +
+      '</span>' +
+
+      '<button class="accountBtn" onclick="logoutUser()">' +
+      'Logout' +
+      '</button>';
+
+
+    notice.textContent =
+      "You are logged in. You can use all NaijaTool tools.";
 
   }
 
   else {
 
-    alert("Invalid operator.");
-    return;
+    area.innerHTML =
+
+      '<button class="accountBtn" onclick="showAuth(\'login\')">' +
+      'Login / Sign up' +
+      '</button>';
+
+
+    notice.textContent =
+      "Create an account or login to use the tools.";
 
   }
-
-  alert("Result: " + result);
 
 }
 
 
+/* =========================
+   TOOL LOGIN PROTECTION
+========================= */
 
-function percentage() {
+async function guardTool() {
 
-  let number = Number(
-    prompt("Enter the number:")
+  const {
+    data
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (!data.session) {
+
+    showAuth("login");
+
+    return false;
+  }
+
+
+  return true;
+
+}
+
+
+/* =========================
+   CALCULATOR
+========================= */
+
+async function calculator() {
+
+  if (!(await guardTool()))
+    return;
+
+
+  let first =
+    Number(
+      prompt(
+        "Enter first number:"
+      )
+    );
+
+
+  let operator =
+    prompt(
+      "Enter operator (+, -, *, /):"
+    );
+
+
+  let second =
+    Number(
+      prompt(
+        "Enter second number:"
+      )
+    );
+
+
+  let result;
+
+
+  if (operator === "+") {
+
+    result =
+      first + second;
+
+  }
+
+  else if (operator === "-") {
+
+    result =
+      first - second;
+
+  }
+
+  else if (operator === "*") {
+
+    result =
+      first * second;
+
+  }
+
+  else if (operator === "/") {
+
+    if (second === 0) {
+
+      alert(
+        "Cannot divide by zero."
+      );
+
+      return;
+    }
+
+    result =
+      first / second;
+
+  }
+
+  else {
+
+    alert(
+      "Invalid operator."
+    );
+
+    return;
+  }
+
+
+  alert(
+    "Result: " +
+    result
   );
 
-  let percent = Number(
-    prompt("Enter percentage:")
-  );
+}
+
+
+/* =========================
+   PERCENTAGE
+========================= */
+
+async function percentage() {
+
+  if (!(await guardTool()))
+    return;
+
+
+  let number =
+    Number(
+      prompt(
+        "Enter the number:"
+      )
+    );
+
+
+  let percent =
+    Number(
+      prompt(
+        "Enter percentage:"
+      )
+    );
+
 
   if (
     !Number.isFinite(number) ||
     !Number.isFinite(percent)
   ) {
 
-    alert("Please enter valid numbers.");
+    alert(
+      "Please enter valid numbers."
+    );
 
     return;
-
   }
 
-  let result = (number * percent) / 100;
 
-  alert(percent + "% of " + number + " = " + result);
+  let result =
+    (number * percent) / 100;
+
+
+  alert(
+    percent +
+    "% of " +
+    number +
+    " = " +
+    result
+  );
 
 }
 
 
+/* =========================
+   AGE CALCULATOR
+========================= */
 
-function ageCalculator() {
+async function ageCalculator() {
 
-  let birthday = prompt(
-    "Enter your birth date (YYYY-MM-DD):"
-  );
-
-  let birth = new Date(birthday);
-
-  if (isNaN(birth.getTime())) {
-
-    alert("Invalid date.");
-
+  if (!(await guardTool()))
     return;
 
+
+  let birthday =
+    prompt(
+      "Enter your birth date (YYYY-MM-DD):"
+    );
+
+
+  let birth =
+    new Date(birthday);
+
+
+  if (
+    isNaN(
+      birth.getTime()
+    )
+  ) {
+
+    alert(
+      "Invalid date."
+    );
+
+    return;
   }
 
-  let today = new Date();
+
+  let today =
+    new Date();
+
 
   let age =
     today.getFullYear() -
     birth.getFullYear();
 
+
   let month =
     today.getMonth() -
     birth.getMonth();
+
 
   if (
     month < 0 ||
     (
       month === 0 &&
-      today.getDate() < birth.getDate()
+      today.getDate() <
+      birth.getDate()
     )
   ) {
 
@@ -429,24 +1276,44 @@ function ageCalculator() {
 
   }
 
-  alert("Your age is " + age + " years.");
+
+  alert(
+    "Your age is " +
+    age +
+    " years."
+  );
 
 }
 
 
+/* =========================
+   TEXT COUNTER
+========================= */
 
-function textCounter() {
+async function textCounter() {
 
-  let text = prompt(
-    "Enter your text:"
-  ) || "";
+  if (!(await guardTool()))
+    return;
 
-  let characters = text.length;
+
+  let text =
+    prompt(
+      "Enter your text:"
+    ) || "";
+
+
+  let characters =
+    text.length;
+
 
   let words =
     text.trim() === ""
       ? 0
-      : text.trim().split(/\s+/).length;
+      : text
+          .trim()
+          .split(/\s+/)
+          .length;
+
 
   alert(
     "Characters: " +
@@ -458,26 +1325,42 @@ function textCounter() {
 }
 
 
+/* =========================
+   PASSWORD GENERATOR
+========================= */
 
-function passwordGenerator() {
+async function passwordGenerator() {
+
+  if (!(await guardTool()))
+    return;
+
 
   let characters =
     "ABCDEFGHJKLMNPQRSTUVWXYZ" +
     "abcdefghijkmnopqrstuvwxyz" +
     "23456789!@#$%";
 
-  let password = "";
 
-  for (let i = 0; i < 16; i++) {
+  let password =
+    "";
+
+
+  for (
+    let i = 0;
+    i < 16;
+    i++
+  ) {
 
     password +=
       characters[
         Math.floor(
-          Math.random() * characters.length
+          Math.random() *
+          characters.length
         )
       ];
 
   }
+
 
   alert(
     "Your password:\n\n" +
@@ -487,22 +1370,37 @@ function passwordGenerator() {
 }
 
 
+/* =========================
+   UNIT CONVERTER
+========================= */
 
-function unitConverter() {
+async function unitConverter() {
 
-  let km = Number(
-    prompt("Enter kilometres:")
-  );
+  if (!(await guardTool()))
+    return;
+
+
+  let km =
+    Number(
+      prompt(
+        "Enter kilometres:"
+      )
+    );
+
 
   if (!Number.isFinite(km)) {
 
-    alert("Invalid number.");
+    alert(
+      "Invalid number."
+    );
 
     return;
-
   }
 
-  let miles = km * 0.621371;
+
+  let miles =
+    km * 0.621371;
+
 
   alert(
     km +
@@ -514,8 +1412,15 @@ function unitConverter() {
 }
 
 
+/* =========================
+   CURRENCY
+========================= */
 
-function currency() {
+async function currency() {
+
+  if (!(await guardTool()))
+    return;
+
 
   alert(
     "Currency converter coming soon."
@@ -524,36 +1429,58 @@ function currency() {
 }
 
 
+/* =========================
+   NUMBER CHECKER
+========================= */
 
-function numberChecker() {
+async function numberChecker() {
 
-  let number = Number(
-    prompt("Enter a number:")
-  );
+  if (!(await guardTool()))
+    return;
+
+
+  let number =
+    Number(
+      prompt(
+        "Enter a number:"
+      )
+    );
+
 
   if (!Number.isFinite(number)) {
 
-    alert("Invalid number.");
+    alert(
+      "Invalid number."
+    );
 
     return;
-
   }
+
 
   if (number % 2 === 0) {
 
-    alert(number + " is EVEN.");
+    alert(
+      number +
+      " is EVEN."
+    );
 
   }
 
   else {
 
-    alert(number + " is ODD.");
+    alert(
+      number +
+      " is ODD."
+    );
 
   }
 
 }
 
 
+/* =========================
+   SEARCH
+========================= */
 
 function searchTools() {
 
@@ -563,29 +1490,83 @@ function searchTools() {
       .value
       .toLowerCase();
 
+
   let tools =
-    document.querySelectorAll(".tool");
+    document.querySelectorAll(
+      ".tool"
+    );
 
-  tools.forEach(function(tool) {
 
-    let text =
-      tool.innerText.toLowerCase();
+  tools.forEach(
+    function(tool) {
 
-    if (text.includes(search)) {
+      let text =
+        tool.innerText
+          .toLowerCase();
 
-      tool.style.display = "block";
+
+      if (
+        text.includes(search)
+      ) {
+
+        tool.style.display =
+          "block";
+
+      }
+
+      else {
+
+        tool.style.display =
+          "none";
+
+      }
 
     }
-
-    else {
-
-      tool.style.display = "none";
-
-    }
-
-  });
+  );
 
 }
+
+
+/* =========================
+   CHECK EXISTING SESSION
+========================= */
+
+supabaseClient
+  .auth
+  .getSession()
+  .then(
+    function({ data }) {
+
+      updateAuthUI(
+        data.session
+          ? data.session.user
+          : null
+      );
+
+    }
+  );
+
+
+/* =========================
+   WATCH LOGIN / LOGOUT
+========================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    function(
+      event,
+      session
+    ) {
+
+      updateAuthUI(
+        session
+          ? session.user
+          : null
+      );
+
+    }
+  );
 
 </script>
 
